@@ -33,6 +33,11 @@ install_requires = [
     'httpsig==1.1.2'
 ]
 
+NO_BUILTIN_SNI_SUPPORT = sys.version_info < (2,7,9)
+
+if NO_BUILTIN_SNI_SUPPORT:
+    install_requires.append('idna<=2.6.0')
+    install_requires.append('pyOpenSSL<17.4.0')
 
 class PyTest(TestCommand):
 
