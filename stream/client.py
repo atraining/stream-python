@@ -2,7 +2,6 @@ from datetime import datetime
 import json
 import logging
 import os
-import sys
 
 from httpsig.requests_auth import HTTPSignatureAuth
 import jwt
@@ -18,11 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 class StreamClient(object):
-
-    if sys.version_info >= (2, 7, 9):
-        base_url = 'https://api.stream-io-api.com/api/'
-    else:
-        base_url = 'https://api.getstream.io/api/'
 
     def __init__(self, api_key, api_secret, app_id, version='v1.0', timeout=6.0, base_url=None, location=None):
         '''
@@ -62,17 +56,9 @@ class StreamClient(object):
         elif base_url is not None:
             self.base_url = base_url
         elif location is not None:
-            if sys.version_info >= (2, 7, 9):
-                self.base_url = 'https://%s-api.stream-io-api.com/api/' % location
-            else:
-                self.base_url = 'https://%s-api.getstream.io/api/' % location
+            self.base_url = 'https://%s-api.stream-io-api.com/api/' % location
 
-
-
-        if sys.version_info >= (2, 7, 9):
-            self.base_analytics_url = 'https://analytics.stream-io-api.com/analytics/'
-        else:
-            self.base_analytics_url = 'https://analytics.getstream.io/analytics/'
+        self.base_analytics_url = 'https://analytics.stream-io-api.com/analytics/'
 
         self.session = requests.Session()
         # TODO: turn this back on after we verify it doesnt retry on slower requests
