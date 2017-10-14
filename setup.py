@@ -26,18 +26,17 @@ Full documentation is available on `Github`_.
 .. _`Github`: https://github.com/GetStream/stream-python
 '''
 
+requests = 'requests>=2.3.0,<3'
+
+if sys.version_info < (2, 7, 9):
+    requests = 'requests[security]>=2.4.1,<3' 
+
 install_requires = [
     'pyjwt==1.3.0',
-    'requests>=2.2.1',
+    requests,
     'six>=1.8.0',
     'httpsig==1.1.2'
 ]
-
-NO_BUILTIN_SNI_SUPPORT = sys.version_info < (2,7,9)
-
-if NO_BUILTIN_SNI_SUPPORT:
-    install_requires.append('idna<=2.6.0')
-    install_requires.append('pyOpenSSL<17.4.0')
 
 class PyTest(TestCommand):
 
