@@ -174,7 +174,7 @@ class ClientTest(TestCase):
         self.assertEqual(client.app_id, '1')
 
     def test_heroku_no_location(self):
-        url = 'https://bvt88g4kvc63:twc5ywfste5bm2ngqkzs7ukxk3pn96yweghjrxcmcrarnt3j4dqj3tucbhym5wfd@api.stream-io-api.com/?app_id=669'
+        url = 'https://bvt88g4kvc63:twc5ywfste5bm2ngqkzs7ukxk3pn96yweghjrxcmcrarnt3j4dqj3tucbhym5wfd@stream-io-api.com/?app_id=669'
         os.environ['STREAM_URL'] = url
         client = stream.connect()
         self.assertEqual(client.api_key, 'bvt88g4kvc63')
@@ -187,10 +187,10 @@ class ClientTest(TestCase):
                 client.base_url, 'http://localhost:8000/api/')
         else:
             self.assertEqual(
-                client.base_url, 'https://api.getstream.io/api/')
+                client.base_url, 'https://api.stream-io-api.com/api/')
 
-    def test_heroku_location(self):
-        url = 'https://ahj2ndz7gsan:gthc2t9gh7pzq52f6cky8w4r4up9dr6rju9w3fjgmkv6cdvvav2ufe5fv7e2r9qy@us-east.api.stream-io-api.com/?app_id=1'
+    def test_heroku_location_compat(self):
+        url = 'https://ahj2ndz7gsan:gthc2t9gh7pzq52f6cky8w4r4up9dr6rju9w3fjgmkv6cdvvav2ufe5fv7e2r9qy@us-east.getstream.io/?app_id=1'
         os.environ['STREAM_URL'] = url
         client = stream.connect()
         self.assertEqual(client.api_key, 'ahj2ndz7gsan')
@@ -202,7 +202,23 @@ class ClientTest(TestCase):
                 client.base_url, 'http://localhost:8000/api/')
         else:
             self.assertEqual(
-                client.base_url, 'https://us-east-api.getstream.io/api/')
+                client.base_url, 'https://us-east-api.stream-io-api.com/api/')
+        self.assertEqual(client.app_id, '1')
+
+    def test_heroku_location(self):
+        url = 'https://ahj2ndz7gsan:gthc2t9gh7pzq52f6cky8w4r4up9dr6rju9w3fjgmkv6cdvvav2ufe5fv7e2r9qy@us-east.stream-io-api.com/?app_id=1'
+        os.environ['STREAM_URL'] = url
+        client = stream.connect()
+        self.assertEqual(client.api_key, 'ahj2ndz7gsan')
+        self.assertEqual(
+            client.api_secret, 'gthc2t9gh7pzq52f6cky8w4r4up9dr6rju9w3fjgmkv6cdvvav2ufe5fv7e2r9qy')
+
+        if self.local_tests:
+            self.assertEqual(
+                client.base_url, 'http://localhost:8000/api/')
+        else:
+            self.assertEqual(
+                client.base_url, 'https://us-east-api.stream-io-api.com/api/')
         self.assertEqual(client.app_id, '1')
 
     def test_heroku_overwrite(self):
