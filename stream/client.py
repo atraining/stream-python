@@ -3,7 +3,7 @@ import json
 import logging
 import os
 
-from httpsig.requests_auth import HTTPSignatureAuth
+# from httpsig.requests_auth import HTTPSignatureAuth
 import jwt
 import requests
 from requests.adapters import HTTPAdapter
@@ -64,7 +64,7 @@ class StreamClient(object):
         self.session = requests.Session()
         # TODO: turn this back on after we verify it doesnt retry on slower requests
         self.session.mount(self.base_url, HTTPAdapter(max_retries=0))
-        self.auth = HTTPSignatureAuth(api_key, secret=api_secret)
+        # self.auth = HTTPSignatureAuth(api_key, secret=api_secret)
 
     def feed(self, feed_slug, user_id):
         '''
